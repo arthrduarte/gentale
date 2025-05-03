@@ -1,13 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 import { supabase } from '@/lib/supabase/client'
 import { Story, Scene } from '@/types/db'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
-export default function StoryPage({ params }: { params: { id: string } }) {
+export default function StoryPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const [story, setStory] = useState<Story | null>(null)
   const [scenes, setScenes] = useState<Scene[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -26,7 +27,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
       const { data: storyData, error: storyError } = await supabase
         .from('stories')
         .select('*')
-        .eq('id', params.id)
+        .eq('id', id)
         .eq('user_id', session.user.id)
         .single()
 
@@ -42,7 +43,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
       const { data: scenesData, error: scenesError } = await supabase
         .from('scenes')
         .select('*')
-        .eq('story_id', params.id)
+        .eq('story_id', id)
         .order('order', { ascending: true })
 
       if (scenesError) {
@@ -55,7 +56,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
     }
 
     fetchStoryAndScenes()
-  }, [params.id, router])
+  }, [id, router])
 
   const handleContinueStory = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -69,7 +70,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
     }
 
     const newScene: Partial<Scene> = {
-      story_id: params.id,
+      story_id: id,
       order: scenes.length + 1,
       text: "As your words echo through the magical realm, a new chapter unfolds...\n\n" +
             "The ancient wizard contemplates your request, his eyes twinkling with wisdom. " +
