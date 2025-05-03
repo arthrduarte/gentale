@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { generateAndStoreImages } from '@/lib/images'
 
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API!)
@@ -114,6 +115,10 @@ export async function POST(request: Request) {
                 { status: 500 }
             )
         }
+
+        // Trigger image generation asynchronously
+        generateAndStoreImages(prompt, scene.id)
+            .catch(error => console.error('Error generating images:', error));
 
         return NextResponse.json({ scene })
 

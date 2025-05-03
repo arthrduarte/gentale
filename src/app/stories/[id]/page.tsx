@@ -6,6 +6,7 @@ import { Story, Scene as SceneType } from '@/types/db'
 import { useRouter } from 'next/navigation'
 import Scene from '@/components/Scene'
 import ContinueStory from '@/components/ContinueStory'
+import Image from 'next/image'
 
 const getRandomRotation = () => {
   // Generate a random number between -12 and 12
@@ -97,16 +98,44 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
         {scenes.map((scene, index) => (
           <div key={scene.id} className="flex items-center justify-between gap-4">
             <div 
-              className="w-64 h-32 flex-shrink-0 rounded-2xl border-2 border-[#F45B69]/20 bg-white/50 transform hover:rotate-0 transition-transform duration-200" 
+              className="relative w-64 h-32 flex-shrink-0 rounded-2xl border-2 border-[#F45B69]/20 overflow-hidden transform hover:rotate-0 transition-transform duration-200" 
               style={{ transform: `rotate(${sceneRotations[index]?.left || 0}deg)` }}
-            />
+            >
+              {scene.images[0] ? (
+                <Image
+                  src={scene.images[0]}
+                  alt={`Left illustration for scene ${scene.order}`}
+                  fill
+                  className="object-cover"
+                  sizes="256px"
+                />
+              ) : (
+                <div className="w-full h-full bg-white/50 flex items-center justify-center text-[#F45B69]/40">
+                  Drawing...
+                </div>
+              )}
+            </div>
             <div className="flex-grow max-w-2xl">
               <Scene scene={scene} />
             </div>
             <div 
-              className="w-64 h-32 flex-shrink-0 rounded-2xl border-2 border-[#F45B69]/20 bg-white/50 transform hover:rotate-0 transition-transform duration-200"
+              className="relative w-64 h-32 flex-shrink-0 rounded-2xl border-2 border-[#F45B69]/20 overflow-hidden transform hover:rotate-0 transition-transform duration-200"
               style={{ transform: `rotate(${sceneRotations[index]?.right || 0}deg)` }}
-            />
+            >
+              {scene.images[1] ? (
+                <Image
+                  src={scene.images[1]}
+                  alt={`Right illustration for scene ${scene.order}`}
+                  fill
+                  className="object-cover"
+                  sizes="256px"
+                />
+              ) : (
+                <div className="w-full h-full bg-white/50 flex items-center justify-center text-[#F45B69]/40">
+                  Drawing...
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
