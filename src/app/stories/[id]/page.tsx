@@ -77,7 +77,7 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
             "With a gentle wave of his staff, images begin to materialize in the mystical mist before you...\n\n" +
             "[AI response will appear here, crafting a continuation of your tale...]",
       images: [],
-      feedback: userInput
+      input: userInput
     }
 
     const { data: sceneData, error } = await supabase
@@ -117,7 +117,7 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
             style={{ border: '2px solid rgba(244, 91, 105, 0.2)' }}
           >
             <p className="text-gray-600 mb-4 italic">
-              {scene.feedback}
+              {scene.input}
             </p>
             <div className="prose max-w-none" style={{ whiteSpace: 'pre-wrap' }}>
               {scene.text}

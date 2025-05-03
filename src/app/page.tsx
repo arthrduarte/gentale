@@ -66,7 +66,7 @@ export default function HomePage() {
                 "With a gentle wave of his staff, images begin to materialize in the mystical mist before you...\n\n" +
                 "[AI response will appear here, crafting the beginning of your tale...]",
           images: [],
-          feedback: storyStart,
+          input: storyStart,
         })
         .select()
         .single()

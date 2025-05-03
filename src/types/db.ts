@@ -9,6 +9,7 @@ export type Scene = {
     id: string;
     story_id: string;
     order: number;
+    input: string;
     text: string;
     images: string[];
     feedback: string;
