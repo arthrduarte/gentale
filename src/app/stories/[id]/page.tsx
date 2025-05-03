@@ -2,15 +2,16 @@
 
 import { useEffect, useState, use } from 'react'
 import { supabase } from '@/lib/supabase/client'
-import { Story, Scene } from '@/types/db'
+import { Story, Scene as SceneType } from '@/types/db'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import Scene from '@/components/Scene'
 
 export default function StoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const [story, setStory] = useState<Story | null>(null)
-  const [scenes, setScenes] = useState<Scene[]>([])
+  const [scenes, setScenes] = useState<SceneType[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [userInput, setUserInput] = useState('')
   const router = useRouter()
@@ -69,7 +70,7 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
       return
     }
 
-    const newScene: Partial<Scene> = {
+    const newScene: Partial<SceneType> = {
       story_id: id,
       order: scenes.length + 1,
       text: "As your words echo through the magical realm, a new chapter unfolds...\n\n" +
@@ -105,24 +106,13 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
 
   return (
     <div className="max-w-3xl mx-auto p-8">
-      <h1 className="text-4xl font-bold mb-8" style={{ color: '#F45B69' }}>
+      <h1 className="text-4xl font-bold text-center mb-8" style={{ color: '#F45B69' }}>
         {story?.title}
       </h1>
       
       <div className="space-y-8 mb-8">
         {scenes.map((scene) => (
-          <div 
-            key={scene.id}
-            className="bg-white rounded-2xl p-6 shadow-lg"
-            style={{ border: '2px solid rgba(244, 91, 105, 0.2)' }}
-          >
-            <p className="text-gray-600 mb-4 italic">
-              {scene.input}
-            </p>
-            <div className="prose max-w-none" style={{ whiteSpace: 'pre-wrap' }}>
-              {scene.text}
-            </div>
-          </div>
+          <Scene key={scene.id} scene={scene} />
         ))}
       </div>
 
