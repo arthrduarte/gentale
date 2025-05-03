@@ -43,7 +43,7 @@ export default function AuthPage() {
         <div>
           <h2 
             className="mt-6 text-center text-4xl font-bold"
-            style={{ color: '#3CBBB1', opacity: '0.9' }}
+            style={{ color: '#F45B69', opacity: '0.9' }}
           >
             {isLogin ? 'Welcome Back!' : 'Join the Adventure'}
           </h2>
@@ -62,7 +62,7 @@ export default function AuthPage() {
               <input
                 type="email"
                 required
-                className="block w-full px-4 py-3 rounded-2xl border-2 border-gray-200 placeholder-gray-400 text-gray-900 transition-all duration-150 focus:outline-none focus:border-[#3CBBB1]"
+                className="block w-full px-4 py-3 rounded-2xl border-2 border-gray-200 placeholder-gray-400 text-gray-900 transition-all duration-150 focus:outline-none focus:border-[#F45B69]"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +72,7 @@ export default function AuthPage() {
               <input
                 type="password"
                 required
-                className="block w-full px-4 py-3 rounded-2xl border-2 border-gray-200 placeholder-gray-400 text-gray-900 transition-all duration-150 focus:outline-none focus:border-[#3CBBB1]"
+                className="block w-full px-4 py-3 rounded-2xl border-2 border-gray-200 placeholder-gray-400 text-gray-900 transition-all duration-150 focus:outline-none focus:border-[#F45B69]"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -93,7 +93,7 @@ export default function AuthPage() {
         <div className="mt-6 text-center">
           <button
             className="text-lg font-medium transition-all duration-150"
-            style={{ color: '#3CBBB1' }}
+            style={{ color: '#F45B69' }}
             onClick={() => setIsLogin(!isLogin)}
           >
             {isLogin
