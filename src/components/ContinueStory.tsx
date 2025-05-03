@@ -57,7 +57,7 @@ export default function ContinueStory({ onContinue, isLastScene, currentScene }:
 
   if (step === 1) {
     return (
-      <div className={`space-y-4 rounded-2xl p-6 ${baseTransitionClasses} ${visibilityClasses}`}>
+      <div className={`space-y-4 rounded-2xl max-w-2xl mx-auto p-6 ${baseTransitionClasses} ${visibilityClasses}`}>
         <h3 className="text-sm text-center mb-6" style={{ color: '#F45B69' }}>
           How did you find the last part of the story?
         </h3>
@@ -85,7 +85,7 @@ export default function ContinueStory({ onContinue, isLastScene, currentScene }:
 
   if (step === 2) {
     return (
-      <div className={`space-y-6 rounded-2xl ${baseTransitionClasses} ${visibilityClasses}`}>
+      <div className={`space-y-6 rounded-2xl max-w-2xl mx-auto ${baseTransitionClasses} ${visibilityClasses}`}>
         <h3 className="text-sm text-center mb-4" style={{ color: '#F45B69' }}>
           Choose a direction for your tale
         </h3>
@@ -116,7 +116,7 @@ export default function ContinueStory({ onContinue, isLastScene, currentScene }:
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`space-y-4 ${baseTransitionClasses} ${visibilityClasses}`}>
+    <form onSubmit={handleSubmit} className={`space-y-4 max-w-2xl mx-auto ${baseTransitionClasses} ${visibilityClasses}`}>
       <Input
         placeholder="How should the story continue?"
         value={userInput}

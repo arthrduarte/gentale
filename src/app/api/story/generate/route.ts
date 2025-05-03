@@ -24,7 +24,7 @@ const generateStoryStart = async (prompt: string) => {
     {
       "title": "A whimsical title for the story",
       "story": "The story content",
-      "suggestions": ["First suggestion", "Second suggestion", "Third suggestion"]
+      "suggestions": ["First suggestion of what could happen next", "Second suggestion of what could happen next", "Third suggestion of what could happen next"]
     }`
 
     const result = await model.generateContent(storyPrompt)
