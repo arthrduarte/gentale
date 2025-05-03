@@ -29,56 +29,23 @@ export default function HomePage() {
 
     setIsCreating(true)
     try {
-      // Get current user session
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
-        router.push('/auth')
-        return
-      }
-
-      console.log('Creating story...')
-      // Create a new story with user_id
-      const { data: storyData, error: storyError } = await supabase
-        .from('stories')
-        .insert({
-          user_id: session.user.id,
-          title: 'A New Tale Begins...',
-          created_at: new Date().toISOString(),
+      const response = await fetch('/api/story/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: storyStart
         })
-        .select()
-        .single()
+      })
 
-      if (storyError || !storyData) {
-        console.error('Error creating story:', storyError)
-        return
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to create story')
       }
-      console.log('Story created:', storyData)
 
-      // Create the first scene
-      console.log('Creating first scene...')
-      const { data: sceneData, error: sceneError } = await supabase
-        .from('scenes')
-        .insert({
-          story_id: storyData.id,
-          order: 1,
-          text: "As your words echo through the magical realm, a new chapter unfolds...\n\n" +
-                "The ancient wizard contemplates your request, his eyes twinkling with wisdom. " +
-                "With a gentle wave of his staff, images begin to materialize in the mystical mist before you...\n\n" +
-                "[AI response will appear here, crafting the beginning of your tale...]",
-          images: [],
-          input: storyStart,
-        })
-        .select()
-        .single()
-
-      if (sceneError) {
-        console.error('Error creating scene:', sceneError)
-        return
-      }
-      console.log('First scene created:', sceneData)
-
-      // Redirect to the new story page
-      router.push(`/stories/${storyData.id}`)
+      const { story } = await response.json()
+      router.push(`/stories/${story.id}`)
     } catch (error) {
       console.error('Error:', error)
     } finally {
