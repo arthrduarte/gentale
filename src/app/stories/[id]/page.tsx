@@ -69,37 +69,10 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
     fetchStoryAndScenes()
   }, [id, router])
 
-  const handleContinueStory = async (userInput: string) => {
-    // Verify session before adding new scene
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      router.push('/auth')
-      return
-    }
-
-    const newScene: Partial<SceneType> = {
-      story_id: id,
-      order: scenes.length + 1,
-      text: "As your words echo through the magical realm, a new chapter unfolds...\n\n" +
-            "The ancient wizard contemplates your request, his eyes twinkling with wisdom. " +
-            "With a gentle wave of his staff, images begin to materialize in the mystical mist before you...\n\n" +
-            "[AI response will appear here, crafting a continuation of your tale...]",
-      images: [],
-      input: userInput
-    }
-
-    const { data: sceneData, error } = await supabase
-      .from('scenes')
-      .insert(newScene)
-      .select()
-      .single()
-
-    if (error) {
-      console.error('Error creating scene:', error)
-      return
-    }
-
-    setScenes([...scenes, sceneData])
+  const handleContinueStory = async (scene: SceneType) => {
+    console.log("[StoryPage] Adding new scene from API:", scene);
+    
+    setScenes([...scenes, scene])
     setSceneRotations([...sceneRotations, {
       left: getRandomRotation(),
       right: getRandomRotation()

@@ -7,7 +7,7 @@ import { ThumbsUp, ThumbsDown, Wand2 } from 'lucide-react'
 import type { Scene as SceneType } from "@/types/db"
 
 interface ContinueStoryProps {
-  onContinue: (input: string) => void;
+  onContinue: (scene: SceneType) => void;
   isLastScene: boolean;
   currentScene?: SceneType;
   storyId: string;
@@ -45,6 +45,7 @@ export default function ContinueStory({ onContinue, isLastScene, currentScene, s
     if (!userInput.trim() || isSubmitting) return
     
     setIsSubmitting(true)
+    console.log("[ContinueStory] Starting story continuation with input:", userInput);
     try {
       const response = await fetch('/api/story/continue', {
         method: 'POST',
@@ -54,7 +55,7 @@ export default function ContinueStory({ onContinue, isLastScene, currentScene, s
         body: JSON.stringify({
           prompt: userInput,
           storyId: storyId,
-          feedback: feedback || 'like' // Default to 'like' if somehow feedback is missing
+          feedback: feedback || 'like'
         })
       })
 
@@ -64,11 +65,13 @@ export default function ContinueStory({ onContinue, isLastScene, currentScene, s
       }
 
       const { scene } = await response.json()
-      onContinue(userInput)
+      console.log("[ContinueStory] Received API response with scene:", scene);
+      onContinue(scene)
+      console.log("[ContinueStory] Called onContinue callback with scene");
       setUserInput('')
       transition(1)
     } catch (error) {
-      console.error('Error:', error)
+      console.error('[ContinueStory] Error:', error)
     } finally {
       setIsSubmitting(false)
     }
