@@ -7,10 +7,16 @@ import { useRouter } from 'next/navigation'
 import Scene from '@/components/Scene'
 import ContinueStory from '@/components/ContinueStory'
 
+const getRandomRotation = () => {
+  // Generate a random number between -12 and 12
+  return Math.floor(Math.random() * 24) - 12
+}
+
 export default function StoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const [story, setStory] = useState<Story | null>(null)
   const [scenes, setScenes] = useState<SceneType[]>([])
+  const [sceneRotations, setSceneRotations] = useState<{ left: number; right: number }[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
 
@@ -50,6 +56,12 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
         return
       }
 
+      const rotations = (scenesData || []).map(() => ({
+        left: getRandomRotation(),
+        right: getRandomRotation()
+      }))
+
+      setSceneRotations(rotations)
       setScenes(scenesData || [])
       setIsLoading(false)
     }
@@ -88,6 +100,10 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
     }
 
     setScenes([...scenes, sceneData])
+    setSceneRotations([...sceneRotations, {
+      left: getRandomRotation(),
+      right: getRandomRotation()
+    }])
   }
 
   if (isLoading) {
@@ -99,14 +115,26 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
+    <div className="max-w-6xl mx-auto p-8">
       <h1 className="text-4xl font-bold text-center mb-8" style={{ color: '#F45B69' }}>
         {story?.title}
       </h1>
       
       <div className="space-y-8 mb-4">
-        {scenes.map((scene) => (
-          <Scene key={scene.id} scene={scene} />
+        {scenes.map((scene, index) => (
+          <div key={scene.id} className="flex items-center justify-between gap-4">
+            <div 
+              className="w-64 h-32 flex-shrink-0 rounded-2xl border-2 border-[#F45B69]/20 bg-white/50 transform hover:rotate-0 transition-transform duration-200" 
+              style={{ transform: `rotate(${sceneRotations[index]?.left || 0}deg)` }}
+            />
+            <div className="flex-grow max-w-2xl">
+              <Scene scene={scene} />
+            </div>
+            <div 
+              className="w-64 h-32 flex-shrink-0 rounded-2xl border-2 border-[#F45B69]/20 bg-white/50 transform hover:rotate-0 transition-transform duration-200"
+              style={{ transform: `rotate(${sceneRotations[index]?.right || 0}deg)` }}
+            />
+          </div>
         ))}
       </div>
 
