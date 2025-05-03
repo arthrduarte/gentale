@@ -8,7 +8,7 @@ const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API!)
 
 const generateStoryStart = async (prompt: string) => {
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-pro-exp-03-25",
+        model: "gemini-2.0-flash-lite",
         generationConfig: { responseMimeType: "application/json" }
     })
 
