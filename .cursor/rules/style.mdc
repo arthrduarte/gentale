@@ -7,7 +7,6 @@ alwaysApply: true
 Overall vibe: playful, whimsical, and comforting—like bedtime storybooks with a modern twist.
 
 ## Primary palette:
- - Verdigris #3CBBB1 → primary UI accent (headers, icons, progress gauge).
  - BrightPink #F45B69 → call‑to‑action elements (choice buttons, emoji hover).
  - Almond #F1DAC4 → main background for maximum contrast and clean look.
  - Black #000000 → text/body copy. Keep large headings at 90% opacity for softer feel.
@@ -15,6 +14,7 @@ Overall vibe: playful, whimsical, and comforting—like bedtime storybooks with 
 Shapes: 16 px rounded corners on cards & buttons; pill‑shaped option buttons.
 Imagery: GPT‑4o images should lean pastel with subtle Verdigris or Pink accents. Avoid harsh shadows.
 Spacing: generous padding (p‑4 min) and 24 px line‑height for readability.
+
 
 
 Motion: 150 ms ease‑in‑out fade on scene transitions; slide‑in for new images.
