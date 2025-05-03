@@ -10,13 +10,15 @@ interface ContinueStoryProps {
   onContinue: (input: string) => void;
   isLastScene: boolean;
   currentScene?: SceneType;
+  storyId: string;
 }
 
-export default function ContinueStory({ onContinue, isLastScene, currentScene }: ContinueStoryProps) {
+export default function ContinueStory({ onContinue, isLastScene, currentScene, storyId }: ContinueStoryProps) {
   const [step, setStep] = useState(isLastScene ? 1 : 0)
   const [feedback, setFeedback] = useState<'like' | 'dislike' | null>(null)
   const [userInput, setUserInput] = useState('')
   const [isVisible, setIsVisible] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     setIsVisible(true)
@@ -40,10 +42,36 @@ export default function ContinueStory({ onContinue, isLastScene, currentScene }:
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!userInput.trim()) return
-    onContinue(userInput)
-    setUserInput('')
-    transition(1)
+    if (!userInput.trim() || isSubmitting) return
+    
+    setIsSubmitting(true)
+    try {
+      const response = await fetch('/api/story/continue', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: userInput,
+          storyId: storyId,
+          feedback: feedback || 'like' // Default to 'like' if somehow feedback is missing
+        })
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to continue story')
+      }
+
+      const { scene } = await response.json()
+      onContinue(userInput)
+      setUserInput('')
+      transition(1)
+    } catch (error) {
+      console.error('Error:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (step === 0) {
@@ -122,13 +150,15 @@ export default function ContinueStory({ onContinue, isLastScene, currentScene }:
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
         className="text-xl py-6 px-4 rounded-2xl bg-white focus-visible:border-[#F45B69] transition-all duration-150 ease-in-out"
+        disabled={isSubmitting}
       />
       <div className="flex justify-end">
         <Button 
           type="submit"
           className="bg-[#F45B69] hover:bg-[#F45B69]/90 text-white py-2 px-8 rounded-full text-md"
+          disabled={isSubmitting}
         >
-          Continue the Tale
+          {isSubmitting ? 'Creating...' : 'Continue the Tale'}
         </Button>
       </div>
     </form>

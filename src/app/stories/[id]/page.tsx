@@ -142,6 +142,7 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
         onContinue={handleContinueStory}
         isLastScene={scenes.length > 0}
         currentScene={scenes[scenes.length - 1]}
+        storyId={id}
       />
     </div>
   )
