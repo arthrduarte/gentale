@@ -4,16 +4,14 @@ import { useEffect, useState, use } from 'react'
 import { supabase } from '@/lib/supabase/client'
 import { Story, Scene as SceneType } from '@/types/db'
 import { useRouter } from 'next/navigation'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import Scene from '@/components/Scene'
+import ContinueStory from '@/components/ContinueStory'
 
 export default function StoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const [story, setStory] = useState<Story | null>(null)
   const [scenes, setScenes] = useState<SceneType[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [userInput, setUserInput] = useState('')
   const router = useRouter()
 
   useEffect(() => {
@@ -59,10 +57,7 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
     fetchStoryAndScenes()
   }, [id, router])
 
-  const handleContinueStory = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!userInput.trim()) return
-
+  const handleContinueStory = async (userInput: string) => {
     // Verify session before adding new scene
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
@@ -93,7 +88,6 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
     }
 
     setScenes([...scenes, sceneData])
-    setUserInput('')
   }
 
   if (isLoading) {
@@ -110,28 +104,16 @@ export default function StoryPage({ params }: { params: Promise<{ id: string }> 
         {story?.title}
       </h1>
       
-      <div className="space-y-8 mb-8">
+      <div className="space-y-8 mb-4">
         {scenes.map((scene) => (
           <Scene key={scene.id} scene={scene} />
         ))}
       </div>
 
-      <form onSubmit={handleContinueStory} className="space-y-4">
-        <Input
-          placeholder="How should the story continue?"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          className="text-xl py-6 px-4 rounded-2xl bg-white focus-visible:border-[#F45B69] transition-all duration-150 ease-in-out"
-        />
-        <div className="flex justify-end">
-          <Button 
-            type="submit"
-            className="bg-[#F45B69] hover:bg-[#F45B69]/90 text-white py-2 px-8 rounded-full text-md"
-          >
-            Continue the Tale
-          </Button>
-        </div>
-      </form>
+      <ContinueStory 
+        onContinue={handleContinueStory}
+        isLastScene={scenes.length > 0}
+      />
     </div>
   )
 } 
