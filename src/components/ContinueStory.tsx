@@ -4,13 +4,15 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ThumbsUp, ThumbsDown, Wand2 } from 'lucide-react'
+import type { Scene as SceneType } from "@/types/db"
 
 interface ContinueStoryProps {
   onContinue: (input: string) => void;
   isLastScene: boolean;
+  currentScene?: SceneType;
 }
 
-export default function ContinueStory({ onContinue, isLastScene }: ContinueStoryProps) {
+export default function ContinueStory({ onContinue, isLastScene, currentScene }: ContinueStoryProps) {
   const [step, setStep] = useState(isLastScene ? 1 : 0)
   const [feedback, setFeedback] = useState<'like' | 'dislike' | null>(null)
   const [userInput, setUserInput] = useState('')
@@ -25,12 +27,6 @@ export default function ContinueStory({ onContinue, isLastScene }: ContinueStory
     await new Promise(resolve => setTimeout(resolve, 150)) // Match transition duration
     setStep(nextStep)
   }
-
-  const suggestions = [
-    "The hero discovers an ancient map leading to a hidden realm",
-    "A mysterious character appears with an urgent warning",
-    "A magical artifact begins to glow with an otherworldly light"
-  ]
 
   const handleFeedback = (type: 'like' | 'dislike') => {
     setFeedback(type)
@@ -94,7 +90,7 @@ export default function ContinueStory({ onContinue, isLastScene }: ContinueStory
           Choose a direction for your tale
         </h3>
         <div className="flex justify-between">
-          {suggestions.map((suggestion, index) => (
+          {currentScene?.suggestions?.map((suggestion, index) => (
             <Button
               key={index}
               variant="outline"

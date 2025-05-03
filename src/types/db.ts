@@ -12,6 +12,7 @@ export type Scene = {
     input: string;
     text: string;
     images: string[];
+    suggestions: string[];
     feedback: string;
     created_at: string;
 }
