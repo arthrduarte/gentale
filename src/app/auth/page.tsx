@@ -38,25 +38,31 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F1DAC4' }}>
+      <div className="max-w-md w-full p-8 bg-white rounded-2xl shadow-lg transition-all duration-150 ease-in-out hover:shadow-xl">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            {isLogin ? 'Sign in to your account' : 'Create a new account'}
+          <h2 
+            className="mt-6 text-center text-4xl font-bold"
+            style={{ color: '#3CBBB1', opacity: '0.9' }}
+          >
+            {isLogin ? 'Welcome Back!' : 'Join the Adventure'}
           </h2>
+          <p className="mt-2 text-center text-lg leading-6" style={{ color: '#000000', opacity: '0.8' }}>
+            {isLogin ? 'Time to continue your journey' : 'Start your magical journey with us'}
+          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <div className="p-4 rounded-2xl text-center" style={{ backgroundColor: '#F45B69', color: 'white' }}>
               {error}
             </div>
           )}
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="space-y-4">
             <div>
               <input
                 type="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="block w-full px-4 py-3 rounded-2xl border-2 border-gray-200 placeholder-gray-400 text-gray-900 transition-all duration-150 focus:outline-none focus:border-[#3CBBB1]"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -66,7 +72,7 @@ export default function AuthPage() {
               <input
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="block w-full px-4 py-3 rounded-2xl border-2 border-gray-200 placeholder-gray-400 text-gray-900 transition-all duration-150 focus:outline-none focus:border-[#3CBBB1]"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -77,20 +83,22 @@ export default function AuthPage() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full px-6 py-3 text-lg font-medium text-white rounded-full transition-all duration-150 ease-in-out"
+              style={{ backgroundColor: '#F45B69', boxShadow: '0 4px 6px rgba(244, 91, 105, 0.25)' }}
             >
               {isLogin ? 'Sign in' : 'Sign up'}
             </button>
           </div>
         </form>
-        <div className="text-center">
+        <div className="mt-6 text-center">
           <button
-            className="text-indigo-600 hover:text-indigo-500"
+            className="text-lg font-medium transition-all duration-150"
+            style={{ color: '#3CBBB1' }}
             onClick={() => setIsLogin(!isLogin)}
           >
             {isLogin
-              ? "Don't have an account? Sign up"
-              : 'Already have an account? Sign in'}
+              ? "Don't have an account? Join us!"
+              : 'Already on board? Sign in!'}
           </button>
         </div>
       </div>
