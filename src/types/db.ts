@@ -11,6 +11,7 @@ export type Scene = {
     order: number;
     text: string;
     images: string[];
+    feedback: string;
     created_at: string;
 }
 
