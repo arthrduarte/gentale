@@ -1,8 +1,9 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 This is a NextJS project using Supabase, Tailwind, Shadcn. 
+
 
 Always check the database schema in [db.ts](mdc:src/types/db.ts) before starting any code.
