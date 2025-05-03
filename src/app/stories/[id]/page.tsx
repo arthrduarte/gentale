@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase/client'
 import { Story, Scene } from '@/types/db'
 import { useRouter } from 'next/navigation'
-import Sidebar from '@/components/Sidebar'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
@@ -97,61 +96,51 @@ export default function StoryPage({ params }: { params: { id: string } }) {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen bg-[#F1DAC4]">
-        <Sidebar />
-        <main className="flex-1 ml-16 lg:ml-64 p-8">
-          <div className="flex items-center justify-center h-full">
-            <p className="text-xl" style={{ color: '#' }}>Loading your tale...</p>
-          </div>
-        </main>
+      <div className="flex items-center justify-center h-full">
+        <p className="text-xl" style={{ color: '#F45B69' }}>Loading your tale...</p>
       </div>
     )
   }
 
   return (
-    <div className="flex min-h-screen bg-[#F1DAC4]">
-      <Sidebar />
-      <main className="flex-1 ml-16 lg:ml-64 p-8">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8" style={{ color: '#F45B69' }}>
-            {story?.title}
-          </h1>
-          
-          <div className="space-y-8 mb-8">
-            {scenes.map((scene) => (
-              <div 
-                key={scene.id}
-                className="bg-white rounded-2xl p-6 shadow-lg"
-                style={{ border: '2px solid rgba(60, 187, 177, 0.2)' }}
-              >
-                <p className="text-gray-600 mb-4 italic">
-                  {scene.feedback}
-                </p>
-                <div className="prose max-w-none" style={{ whiteSpace: 'pre-wrap' }}>
-                  {scene.text}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <form onSubmit={handleContinueStory} className="space-y-4">
-            <Input
-              placeholder="How should the story continue?"
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              className="text-xl py-6 px-4 rounded-2xl bg-white focus-visible:border-[#F45B69] transition-all duration-150 ease-in-out"
-            />
-            <div className="flex justify-end">
-              <Button 
-                type="submit"
-                className="bg-[#F45B69] hover:bg-[#F45B69]/90 text-white py-2 px-8 rounded-full text-md"
-              >
-                Continue the Tale
-              </Button>
+    <div className="max-w-3xl mx-auto p-8">
+      <h1 className="text-4xl font-bold mb-8" style={{ color: '#F45B69' }}>
+        {story?.title}
+      </h1>
+      
+      <div className="space-y-8 mb-8">
+        {scenes.map((scene) => (
+          <div 
+            key={scene.id}
+            className="bg-white rounded-2xl p-6 shadow-lg"
+            style={{ border: '2px solid rgba(244, 91, 105, 0.2)' }}
+          >
+            <p className="text-gray-600 mb-4 italic">
+              {scene.feedback}
+            </p>
+            <div className="prose max-w-none" style={{ whiteSpace: 'pre-wrap' }}>
+              {scene.text}
             </div>
-          </form>
+          </div>
+        ))}
+      </div>
+
+      <form onSubmit={handleContinueStory} className="space-y-4">
+        <Input
+          placeholder="How should the story continue?"
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          className="text-xl py-6 px-4 rounded-2xl bg-white focus-visible:border-[#F45B69] transition-all duration-150 ease-in-out"
+        />
+        <div className="flex justify-end">
+          <Button 
+            type="submit"
+            className="bg-[#F45B69] hover:bg-[#F45B69]/90 text-white py-2 px-8 rounded-full text-md"
+          >
+            Continue the Tale
+          </Button>
         </div>
-      </main>
+      </form>
     </div>
   )
 } 
