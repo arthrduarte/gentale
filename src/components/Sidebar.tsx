@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import { Story } from '@/types/db'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, BookOpen } from 'lucide-react'
@@ -9,7 +9,6 @@ import Image from 'next/image'
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [stories, setStories] = useState<Story[]>([])
-  const supabase = createClient()
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -46,9 +45,11 @@ export default function Sidebar() {
       <div className="p-4 border-b-2" style={{ borderColor: 'rgba(60, 187, 177, 0.2)' }}>
         <div className="flex items-center justify-between">
           {!isCollapsed && (
-            <div className="flex items-center gap-2">
-              <Image src="/logo.png" alt="Merlin the Wizard" width={32} height={32} />
-              <h1 className="text-2xl font-bold" style={{ color: '#F45B69' }}>Gentale</h1>
+            <div>
+              <a href="/" className="flex items-center gap-2">
+                <Image src="/logo.png" alt="Merlin the Wizard" width={32} height={32} />
+                <h1 className="text-2xl font-bold" style={{ color: '#F45B69' }}>Gentale</h1>
+              </a>
             </div>
           )}
           <Button

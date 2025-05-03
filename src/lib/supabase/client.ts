@@ -7,10 +7,12 @@ if (!supabaseUrl || !supabaseKey) {
     throw new Error('Missing Supabase credentials')
 }
 
-export function createClient() {
+function createClient() {
     // Create a supabase client on the browser with project's credentials
     return createBrowserClient(
         supabaseUrl!,
         supabaseKey!
     )
 }
+
+export const supabase = createClient()
